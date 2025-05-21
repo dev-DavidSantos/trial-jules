@@ -1,20 +1,36 @@
 <div class="animal-list-container">
-  <div class="p-field search-field">
-    <span class="p-input-icon-left">
-      <i class="pi pi-search"></i>
-      <input
-        type="text"
-        pInputText
-        [(ngModel)]="searchTerm"
-        (input)="onSearchChange($event)"
-        placeholder="Search animals..."
-        class="p-inputtext-lg"
-      />
-    </span>
+  <div class="toolbar"> <!-- Container for search and select all -->
+    <div class="p-field search-field">
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input
+          type="text"
+          pInputText
+          [value]="searchTerm()"
+          (input)="onSearchChange($event)"
+          placeholder="Search animals..."
+          class="p-inputtext-lg"
+        />
+      </span>
+    </div>
+
+    <div class="select-all-container">
+      <p-checkbox
+        #selectAllCheckboxRef 
+        [value]="masterCheckboxStatus().checked"
+        (onChange)="toggleSelectAll()"
+        [binary]="true"
+        inputId="selectAllAnimals"
+        [disabled]="masterCheckboxStatus().disabled"
+        aria-label="Select or deselect all filtered animals">
+      </p-checkbox>
+      <label for="selectAllAnimals" class="p-ml-2">Select All</label>
+    </div>
+    <pre>{{ checkedAnimals().length }}</pre>
   </div>
 
   <div class="scrollable-list">
-    <p-scroller [items]="filteredAnimals" scrollHeight="400px" [itemSize]="70">
+    <p-scroller [items]="filteredAnimals()" scrollHeight="400px" [itemSize]="70">
       <ng-template pTemplate="item" let-animal let-options="options">
         <div class="p-mb-2 animal-item-card" [ngClass]="{'odd': options.odd}">
           <p-card>
@@ -22,9 +38,9 @@
               <span class="animal-name">{{ animal.name }}</span>
               <p-checkbox
                 [(ngModel)]="animal.selected"
+                (ngModelChange)="onAnimalSelectionChange(animal)"
                 [binary]="true"
                 inputId="animal-{{animal.id}}"
-                (onChange)="logSelectedAnimals()"
                 aria-label="'Select ' + animal.name">
               </p-checkbox>
             </div>
@@ -32,7 +48,6 @@
         </div>
       </ng-template>
       <ng-template pTemplate="loader" let-options="options">
-         <!-- You can customize the loader if needed -->
         <div class="p-mb-2 animal-item-card" [ngClass]="{'odd': options.odd}">
            <p-card>
               <div class="animal-item-content">
@@ -42,38 +57,6 @@
            </p-card>
         </div>
       </ng-template>
-      <ng-template pTemplate="empty">
-        <div class="p-p-3 empty-message">
-          No animals found matching your search.
-        </div>
-      </ng-template>
     </p-scroller>
-
-    <!--
-    Alternative using *ngFor with manual scroll container (less performant for very large lists):
-    <div class="manual-scroll-container">
-      <div *ngIf="filteredAnimals.length > 0; else noAnimals">
-        <div *ngFor="let animal of filteredAnimals" class="p-mb-2 animal-item-card">
-          <p-card>
-            <div class="animal-item-content">
-              <span class="animal-name">{{ animal.name }}</span>
-              <p-checkbox
-                [(ngModel)]="animal.selected"
-                [binary]="true"
-                inputId="animal-{{animal.id}}"
-                (onChange)="logSelectedAnimals()"
-                aria-label="'Select ' + animal.name">
-              </p-checkbox>
-            </div>
-          </p-card>
-        </div>
-      </div>
-      <ng-template #noAnimals>
-        <div class="p-p-3 empty-message">
-          No animals found matching your search.
-        </div>
-      </ng-template>
-    </div>
-    -->
   </div>
 </div>

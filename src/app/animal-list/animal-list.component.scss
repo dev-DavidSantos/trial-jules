@@ -1,0 +1,64 @@
+.animal-list-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: 20px auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.search-field {
+  margin-bottom: 20px;
+  display: flex; // To make input take full width of its container
+  .p-input-icon-left {
+    width: 100%;
+    input[pInputText] {
+      width: 100%;
+    }
+  }
+}
+
+.scrollable-list {
+  // p-scroller defines its own height via scrollHeight property
+  // If using manual scroll:
+  /*
+  max-height: 400px; // Set a max height for the scrollable area
+  overflow-y: auto;  // Enable vertical scrolling
+  border: 1px solid #eee;
+  padding: 10px;
+  background-color: #fff;
+  */
+}
+
+.animal-item-card {
+  margin-bottom: 10px; // Spacing between cards
+
+  p-card {
+    .p-card-body { // Target the inner body for padding
+      padding: 0.75rem 1rem; // Reduce default card padding a bit
+    }
+    .p-card-content { // Target the content area for no extra padding
+        padding: 0;
+    }
+  }
+}
+
+.animal-item-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.animal-name {
+  font-size: 1.1em;
+  flex-grow: 1; // Allow name to take available space
+  margin-right: 10px; // Space before checkbox
+}
+
+.empty-message {
+  text-align: center;
+  color: #777;
+  padding: 20px;
+}

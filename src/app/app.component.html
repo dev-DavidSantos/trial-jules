@@ -1,1 +1,82 @@
-<app-animal-list></app-animal-list>
+<!-- src/app/app.component.html -->
+<div class="card">
+    <p-table
+      #filterTable
+      [value]="displayedFilters()" 
+      dataKey="id"
+      [virtualScroll]="true"
+      [virtualScrollItemSize]="virtualScrollItemSize"
+      scrollHeight="400px"
+      styleClass="p-datatable-striped p-datatable-gridlines"
+      [rows]="displayedFilters().length" 
+    >
+      <ng-template pTemplate="caption">
+        <div class="table-caption">
+          <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input
+              pInputText
+              type="text"
+              [ngModel]="searchTerm()" 
+              (ngModelChange)="searchTerm.set($event)"
+              placeholder="Search by field name"
+            />
+            <p-button
+              *ngIf="searchTerm()"
+              icon="pi pi-times"
+              styleClass="p-button-text p-button-sm"
+              (click)="clearSearch()"
+              title="Clear search"
+            ></p-button>
+          </span>
+  
+          <div class="show-selected-switch">
+            <p-inputSwitch
+              inputId="showSelectedSwitch"
+              [ngModel]="showOnlySelected()" 
+              (onChange)="onShowOnlySelectedSwitchChange($event)"> 
+            </p-inputSwitch>
+            <label for="showSelectedSwitch" style="margin-left: 8px;">Show only selected</label>
+          </div>
+        </div>
+      </ng-template>
+  
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 70%;">Field</th>
+          <th style="width: 30%; text-align: center;">
+            <div class="filter-header-content">
+              <p-checkbox
+                [(ngModel)]="selectAllHeaderState" 
+                (ngModelChange)="onSelectAllChange($event)" 
+                [binary]="true"
+                inputId="selectAllCheckbox">
+              </p-checkbox>
+              <label for="selectAllCheckbox" style="margin-left: 8px;">Filter</label>
+            </div>
+          </th>
+        </tr>
+      </ng-template>
+  
+      <ng-template pTemplate="body" let-filter let-rowIndex="rowIndex">
+        <tr [pSelectableRow]="filter" [pSelectableRowIndex]="rowIndex">
+          <td>{{ filter.name }}</td>
+          <td style="text-align: center;">
+            <p-checkbox
+              [ngModel]="filter.isActive"
+              (ngModelChange)="onRowCheckboxChange(filter, $event)" 
+              [binary]="true"
+              [inputId]="'filterCheckbox-' + filter.id">
+            </p-checkbox>
+          </td>
+        </tr>
+      </ng-template>
+  
+      <ng-template pTemplate="emptymessage">
+          <tr>
+              <td [attr.colspan]="2" style="text-align: center;">No filters found.</td>
+          </tr>
+      </ng-template>
+  
+    </p-table>
+  </div>
